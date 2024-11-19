@@ -8,18 +8,18 @@ const Form = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // In expencetrack all form data save 
     const expencetrack = { expence, date, category, price };
-    localStorage.setItem("expencetrack", JSON.stringify(expencetrack));
-    console.log('expence:', expence);
-    console.log('Date:', date);
-    console.log('Category:', category);
-    console.log('price:', price);
+
+    const existingData = JSON.parse(localStorage.getItem("expenses")) || [];
+    existingData.push(expencetrack);
+    localStorage.setItem("expenses", JSON.stringify(existingData));
 
   };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 bg-white shadow-md rounded">
-        <h1 className=' h-1 text-2xl  flex justify-center'>Expence Tracker Form </h1><br />
+      <h1 className=' h-1 text-2xl  flex justify-center'>Expence Tracker Form </h1><br />
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Expence:</label>
         <input
