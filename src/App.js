@@ -1,21 +1,31 @@
-// import logo from './logo.svg';
-import Navbar from "./components/Navbar.jsx"
-import Home from "./components/Home.jsx"
 import './App.css';
-import Form from './components/Form.jsx';
-import { Routes } from "react-router-dom";
-import { Route } from "react-router-dom";
-import Task from "./components/Task.jsx";
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import ExpenseFormPage from './pages/ExpenseFormPage';
+import ExpenseListPage from './pages/ExpenseListPage';
+
+
 function App() {
+  const [formValues, setFormValues] = useState({});
+  const setFormValue = (value, key) => {
+    setFormValues(currentFormValues => ({...currentFormValues, [key]: value }));
+  };
+  const resetFormValues = () => {
+    setFormValues({});
+  };
   return (
-    <div className="App">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Form" element={<Form/>} />
-        <Route path="/Task" element={<Task/>} />
-      </Routes>
-    </div>  
+    <BrowserRouter>
+      <div className="App">
+        <nav class="tab">
+          <NavLink to="">Add Expense</NavLink>
+          <NavLink to="expenses">View Expenses</NavLink>
+        </nav>
+        <Routes>
+          <Route path='' element={<ExpenseFormPage formValues={formValues} setFormValue={setFormValue} resetFormValues={resetFormValues} />}></Route>
+          <Route path='expenses' element={<ExpenseListPage setFormValues={setFormValues} />}></Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
