@@ -6,13 +6,7 @@ import ExpenseListPage from './pages/ExpenseListPage';
 
 
 function App() {
-  const [formValues, setFormValues] = useState({});
-  const setFormValue = (value, key) => {
-    setFormValues(currentFormValues => ({...currentFormValues, [key]: value }));
-  };
-  const resetFormValues = () => {
-    setFormValues({});
-  };
+  const [editIndex, setEditIndex] = useState(-1);
   return (
     <BrowserRouter>
       <div className="App">
@@ -21,8 +15,8 @@ function App() {
           <NavLink to="expenses">View Expenses</NavLink>
         </nav>
         <Routes>
-          <Route path='' element={<ExpenseFormPage formValues={formValues} setFormValue={setFormValue} resetFormValues={resetFormValues} />}></Route>
-          <Route path='expenses' element={<ExpenseListPage setFormValues={setFormValues} />}></Route>
+          <Route path='' element={<ExpenseFormPage editIndex={editIndex} setEditIndex={setEditIndex} />}></Route>
+          <Route path='expenses' element={<ExpenseListPage setEditIndex={setEditIndex} />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
