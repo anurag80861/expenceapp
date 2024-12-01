@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import ExpenseContext from '../context/ExpensesContext';
 
-const ExpenseList = ({ expenses, onDeleteExpense, onEditExpense }) => {
+const ExpenseList = ({ onDeleteExpense, onEditExpense }) => {
+  const { expenses } = useContext(ExpenseContext)
   return (
     <ul>
-        {expenses.map((expense, index) => (
-            <li key={index}>
-                {expense.date} - ${expense.amount} - {expense.title} - {expense.category} - {expense.paymentMode} - {expense.recurring ? 'Recurring' : 'One-time'} - {expense.beneficiary} - Tags: {expense.tags?.join(', ')}
-                <button onClick={() => onDeleteExpense(index)}>Delete</button>
-                <button onClick={() => onEditExpense(index)}>Edit</button>
-            </li>
-        ))}
+      {expenses.map((expense, index) => (
+        <li key={index}>
+          {expense.date} - ${expense.amount} - {expense.title} - {expense.category} - {expense.paymentMode} - {expense.recurring ? 'Recurring' : 'One-time'} - {expense.beneficiary} - Tags: {expense.tags?.join(', ')}
+          <button onClick={() => onDeleteExpense(index)}>Delete</button>
+          <button onClick={() => onEditExpense(index)}>Edit</button>
+        </li>
+      ))}
     </ul>
   );
 };

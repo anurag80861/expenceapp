@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ExpenseList from '../components/ExpenseList';
 import { useNavigate } from 'react-router-dom';
+import ExpenseContext from '../context/ExpensesContext';
 
-
-
-const ExpenseListPage = ({ setEditIndex,expenses,setExpenses }) => {
+const ExpenseListPage = () => {
     const navigate = useNavigate();
-
-
+    const { setEditIndex, expenses, setExpenses } = useContext(ExpenseContext)
     const handleDeleteExpense = (ind) => {
-        const UpdatedExpenses=expenses.filter((_,index)=> index !== ind)
-        expenses.splice(ind, 1);
-        setExpenses(UpdatedExpenses );
-      
+        const UpdatedExpenses = expenses.filter((_, index) => {
+            return index !== ind
+        })
+        setExpenses(UpdatedExpenses);
+
     };
 
     const handleEditExpense = (ind) => {
@@ -23,7 +22,7 @@ const ExpenseListPage = ({ setEditIndex,expenses,setExpenses }) => {
     return (
         <>
             <h1>Expense List</h1>
-            <ExpenseList expenses={expenses} onDeleteExpense={handleDeleteExpense} onEditExpense={handleEditExpense} />
+            <ExpenseList onDeleteExpense={handleDeleteExpense} onEditExpense={handleEditExpense} />
         </>
     );
 };

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DateInput, AmountInput, TitleInput, CategoryInput, PaymentModeInput, RecurringInput, BeneficiaryInput, TagsInput } from './Inputs';
-import { getExpenses } from '../service/localstorage';
+import ExpenseContext from '../context/ExpensesContext';
 
 const emptyForm = () => ({
   date: new Date().toISOString().split('T')[0],
@@ -14,8 +14,8 @@ const emptyForm = () => ({
   tags: '',
 });
 
-function formValuesFromLocalStorage(ind,expenses) {
-  
+function formValuesFromLocalStorage(ind, expenses) {
+
   const expense = expenses[ind];
   const formValues = {
     ...expense,
@@ -25,8 +25,9 @@ function formValuesFromLocalStorage(ind,expenses) {
   return formValues;
 }
 
-const ExpenseForm = ({ onSaveExpense, editIndex,expenses }) => {
-  const prefilledForm = editIndex > -1 ? formValuesFromLocalStorage(editIndex,expenses) : emptyForm();
+const ExpenseForm = ({ onSaveExpense }) => {
+  const { editIndex, expenses } = useContext(ExpenseContext)
+  const prefilledForm = editIndex > -1 ? formValuesFromLocalStorage(editIndex, expenses) : emptyForm();
   const [formValues, setFormValues] = useState(prefilledForm);
 
   const handleSubmit = (e) => {
@@ -42,15 +43,15 @@ const ExpenseForm = ({ onSaveExpense, editIndex,expenses }) => {
     setFormValues(emptyForm());
   };
 
-  const [date, setDate] = [formValues.date, (val) => setFormValues((state) => ({...state, date: val}))]
-  const [amount, setAmount] = [formValues.amount, (val) => setFormValues((state) => ({...state, amount: val}))]
-  const [title, setTitle] = [formValues.title, (val) => setFormValues((state) => ({...state, title: val}))]
-  const [category, setCategory] = [formValues.category, (val) => setFormValues((state) => ({...state, category: val}))]
-  const [newCategory, setNewCategory] = [formValues.newCategory, (val) => setFormValues((state) => ({...state, newCategory: val}))]
-  const [paymentMode, setPaymentMode] = [formValues.paymentMode, (val) => setFormValues((state) => ({...state, paymentMode: val}))]
-  const [recurring, setRecurring] = [formValues.recurring, (val) => setFormValues((state) => ({...state, recurring: val}))]
-  const [beneficiary, setBeneficiary] = [formValues.beneficiary, (val) => setFormValues((state) => ({...state, beneficiary: val}))]
-  const [tags, setTags] = [formValues.tags, (val) => setFormValues((state) => ({...state, tags: val}))]
+  const [date, setDate] = [formValues.date, (val) => setFormValues((state) => ({ ...state, date: val }))]
+  const [amount, setAmount] = [formValues.amount, (val) => setFormValues((state) => ({ ...state, amount: val }))]
+  const [title, setTitle] = [formValues.title, (val) => setFormValues((state) => ({ ...state, title: val }))]
+  const [category, setCategory] = [formValues.category, (val) => setFormValues((state) => ({ ...state, category: val }))]
+  const [newCategory, setNewCategory] = [formValues.newCategory, (val) => setFormValues((state) => ({ ...state, newCategory: val }))]
+  const [paymentMode, setPaymentMode] = [formValues.paymentMode, (val) => setFormValues((state) => ({ ...state, paymentMode: val }))]
+  const [recurring, setRecurring] = [formValues.recurring, (val) => setFormValues((state) => ({ ...state, recurring: val }))]
+  const [beneficiary, setBeneficiary] = [formValues.beneficiary, (val) => setFormValues((state) => ({ ...state, beneficiary: val }))]
+  const [tags, setTags] = [formValues.tags, (val) => setFormValues((state) => ({ ...state, tags: val }))]
 
   const submitButtonText = editIndex > -1 ? "Edit Expense" : "Add Expense";
 
