@@ -21,7 +21,7 @@ const ExpenseFormPage = ({ editIndex, setEditIndex, expenses, dispatchExpenseAct
 
     return (
         <>
-            <h1>Daily Expense Tracker</h1>
+            <h1 className='bg-red-400'> Daily Expense Tracker</h1>
             <ExpenseForm onSaveExpense={handleSaveExpense} editIndex={editIndex} key={editIndex} expenses={expenses || []} />
         </>
     );
