@@ -1,26 +1,30 @@
 import './App.css';
-import React, {useEffect, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import ExpenseFormPage from './pages/ExpenseFormPage';
 import ExpenseListPage from './pages/ExpenseListPage';
-import { getExpensesFromBackend, setExpensesInBackend } from './service/localstorage';
+import {getExpensesFromBackend, setExpensesInBackend} from './service/localstorage'
+import expenseReducer from './reducers/expenceReducer';
 
 
 function App() {
   const [editIndex, setEditIndex] = useState(-1);
-  const [expenses,setExpenses]=useState([]);
-  const renderCount=useRef(0);
-  useEffect(()=>{
-    getExpensesFromBackend().then(expensesVal=>setExpenses(expensesVal));
-  },[]);
+  const [expenses, dispatchExpenseAction] = useReducer(expenseReducer, null);
   useEffect(() => {
-   setExpensesInBackend(expenses).then(()=> console.log()); 
-  }, [expenses])
-  
+    getExpensesFromBackend().then(expensesVal => {
+      dispatchExpenseAction({
+        type: "FILL",
+        payload: { expenses: expensesVal },
+      });
+    });
+  }, []);
 
-   
-
-  console.log("Reander count -", renderCount.current++)
+  useEffect(() => {
+    if (expenses === null) {
+      return; // data not loaded from the backend yet
+    }
+    setExpensesInBackend(expenses).then(() => console.log("Saved expenses successfully!"));
+  }, [expenses]);
 
   return (
     <BrowserRouter>
@@ -30,8 +34,8 @@ function App() {
           <NavLink to="expenses">View Expenses</NavLink>
         </nav>
         <Routes>
-          <Route path='' element={<ExpenseFormPage editIndex={editIndex} setEditIndex={setEditIndex} expenses={expenses} setExpenses={setExpenses}/>}></Route>
-          <Route path='expenses' element={<ExpenseListPage setEditIndex={setEditIndex} expenses={expenses} setExpenses={setExpenses}/>}></Route>
+          <Route path='' element={<ExpenseFormPage editIndex={editIndex} setEditIndex={setEditIndex} expenses={expenses} dispatchExpenseAction={dispatchExpenseAction} />}></Route>
+          <Route path='expenses' element={<ExpenseListPage setEditIndex={setEditIndex} expenses={expenses} dispatchExpenseAction={dispatchExpenseAction} />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
