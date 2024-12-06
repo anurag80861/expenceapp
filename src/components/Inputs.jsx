@@ -1,117 +1,143 @@
-import React from 'react';
+import React from "react";
 
 export const DateInput = ({ value, onChange }) => {
   return (
-    <div>
-      <label>Date:</label>
-      <input type="date" value={value} onChange={(e) => onChange(e.target.value)} required />
-    </div>
-  );
-};
-
-  
-export const AmountInput = ({ value, onChange }) => {
-  return (
-    <div>
-    <label>Amount:</label>
-    <input type="number" value={value} onChange={(e) => onChange(e.target.value)} required />
-    </div>
-  );
-};
-
-
-export const TitleInput = ({ value, onChange }) => {
-  return (
-    <div>
-      <label>Title:</label>
-      <input type="text" value={value} onChange={(e) => onChange(e.target.value)} required />
-    </div>
-  );
-};
-
-
-const categories = [
-  "Entertainment", "Food", "Groceries", "Gift", "Apparel", "Self Care", "Donation", "Capital Expense", "Travel", "Repair", "Medical", "Miscellaneous", "Petrol"
-];
-
-export const CategoryInput = ({ selectedCategory, onChange, newCategory, onNewCategoryChange }) => {
-  return (
-    <div>
-      <label>Category:</label>
-      <div>
-        {categories.map(category => (
-          <label key={category}>
-            <input type="radio" name="category" value={category} checked={selectedCategory === category} onChange={() => onChange(category)} />
-            {category}
-          </label>
-        ))}
-        <input type="text" value={newCategory} onChange={(e) => onNewCategoryChange(e.target.value)} placeholder="Add New Category" />
+    
+      <div className="mb-4 w-80 mx-auto ">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Date:</label>
+        <input
+          type="date"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        />
       </div>
-    </div>
-  );
+      );
 };
 
-
-export const PaymentModeInput = ({ selectedMode, onChange }) => {
+      export const AmountInput = ({value, onChange}) => {
   return (
-    <div>
-      <label>Payment Mode:</label>
-      <div>
-        <label>
-          <input type="radio" name="payment-mode" value="Cash" checked={selectedMode === 'Cash'} onChange={() => onChange('Cash')} />
-          Cash
-        </label>
-        <label>
-          <input type="radio" name="payment-mode" value="Digital" checked={selectedMode === 'Digital'} onChange={() => onChange('Digital')} />
-          Digital
-        </label>
+      <div className="mb-4 w-80 mx-auto">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Amount:</label>
+        <input
+          type="number"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        />
       </div>
-    </div>
-  );
+      );
 };
 
-
-export const RecurringInput = ({ value, onChange }) => {
+      export const TitleInput = ({value, onChange}) => {
   return (
-    <div>
-      <label>Recurring:</label>
-      <input type="checkbox" checked={value} onChange={() => onChange(!value)} />
-    </div>
-  );
-};
-
-export const BeneficiaryInput = ({ selectedBeneficiary, onChange }) => {
-  return (
-    <div>
-      <label>Beneficiary:</label>
-      <div>
-        <label>
-          <input type="radio" name="beneficiary" value="Self" checked={selectedBeneficiary === 'Self'} onChange={() => onChange('Self')} />
-          Self
-        </label>
-        <label>
-          <input type="radio" name="beneficiary" value="Family" checked={selectedBeneficiary === 'Family'} onChange={() => onChange('Family')} />
-          Family
-        </label>
-        <label>
-          <input type="radio" name="beneficiary" value="Friends" checked={selectedBeneficiary === 'Friends'} onChange={() => onChange('Friends')} />
-          Friends
-        </label>
-        <label>
-          <input type="radio" name="beneficiary" value="Vehicle" checked={selectedBeneficiary === 'Vehicle'} onChange={() => onChange('Vehicle')} />
-          Vehicle
-        </label>
+      <div className="mb-4 w-80 mx-auto">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Title:</label>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        />
       </div>
-    </div>
-  );
+      );
 };
 
+      const categories = [
+      "Entertainment",
+      "Food",
+      "Groceries",
+      "Gift",
+      "Apparel",
+      "Self Care",
+      "Donation",
+      "Capital Expense",
+      "Travel",
+      "Repair",
+      "Medical",
+      "Miscellaneous",
+      "Petrol",
+      ];
 
-export const TagsInput = ({ value, onChange }) => {
+      export const CategoryInput = ({selectedCategory, onChange}) => {
   return (
-    <div>
-      <label>Tags:</label>
-      <input type="text" value={value} onChange={(e) => onChange(e.target.value)} />
-    </div>
+      <div className="mb-4 w-80 mx-auto">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Category:</label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        >
+          <option value="" disabled>
+            Select a Category
+          </option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+      );
+};
+
+      export const PaymentModeInput = ({selectedMode, onChange}) => {
+  return (
+      <div className="mb-4 w-80 mx-auto">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Payment Mode:</label>
+        <select
+          value={selectedMode}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        >
+          <option value="" disabled>
+            Select Payment Mode
+          </option>
+          <option value="Cash">Cash</option>
+          <option value="Digital">Digital</option>
+        </select>
+      </div>
+      );
+};
+
+      export const BeneficiaryInput = ({selectedBeneficiary, onChange}) => {
+  const beneficiaries = ["Self", "Family", "Friends", "Vehicle"];
+
+      return (
+      <div className="mb-4 w-80 mx-auto">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Beneficiary:</label>
+        <select
+          value={selectedBeneficiary}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        >
+          <option value="" disabled>
+            Select Beneficiary
+          </option>
+          {beneficiaries.map((beneficiary) => (
+            <option key={beneficiary} value={beneficiary}>
+              {beneficiary}
+            </option>
+          ))}
+        </select>
+      </div>
+      );
+};
+
+      export const TagsInput = ({value, onChange}) => {
+  return (
+      <div className="mb-4 w-80 mx-auto">
+        <label className="block text-sm font-medium text-gray-800 mb-1">Tags:</label>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        />
+      </div>
+    
   );
 };

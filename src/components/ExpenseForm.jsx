@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DateInput, AmountInput, TitleInput, CategoryInput, PaymentModeInput, RecurringInput, BeneficiaryInput, TagsInput } from './Inputs';
+import { DateInput, AmountInput, TitleInput, CategoryInput, PaymentModeInput,  BeneficiaryInput, TagsInput } from './Inputs';
 import { getExpenses } from '../service/localstorage';
 
 const emptyForm = () => ({
@@ -9,7 +9,7 @@ const emptyForm = () => ({
   category: '',
   newCategory: '',
   paymentMode: 'Cash',
-  recurring: false,
+  
   beneficiary: 'Self',
   tags: '',
 });
@@ -48,20 +48,20 @@ const ExpenseForm = ({ onSaveExpense, editIndex,expenses }) => {
   const [category, setCategory] = [formValues.category, (val) => setFormValues((state) => ({...state, category: val}))]
   const [newCategory, setNewCategory] = [formValues.newCategory, (val) => setFormValues((state) => ({...state, newCategory: val}))]
   const [paymentMode, setPaymentMode] = [formValues.paymentMode, (val) => setFormValues((state) => ({...state, paymentMode: val}))]
-  const [recurring, setRecurring] = [formValues.recurring, (val) => setFormValues((state) => ({...state, recurring: val}))]
+  
   const [beneficiary, setBeneficiary] = [formValues.beneficiary, (val) => setFormValues((state) => ({...state, beneficiary: val}))]
   const [tags, setTags] = [formValues.tags, (val) => setFormValues((state) => ({...state, tags: val}))]
 
   const submitButtonText = editIndex > -1 ? "Edit Expense" : "Add Expense";
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='w-full h-full bg-purple-800'>
       <DateInput value={date} onChange={setDate} />
       <AmountInput value={amount} onChange={setAmount} />
       <TitleInput value={title} onChange={setTitle} />
       <CategoryInput selectedCategory={category} onChange={setCategory} newCategory={newCategory} onNewCategoryChange={setNewCategory} />
       <PaymentModeInput selectedMode={paymentMode} onChange={setPaymentMode} />
-      <RecurringInput value={recurring} onChange={setRecurring} />
+     
       <BeneficiaryInput selectedBeneficiary={beneficiary} onChange={setBeneficiary} />
       <TagsInput value={tags} onChange={setTags} />
       <button type="submit">{submitButtonText}</button>
