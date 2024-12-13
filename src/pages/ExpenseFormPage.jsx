@@ -1,28 +1,27 @@
 import React from 'react';
 import ExpenseForm from '../components/ExpenseForm';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addExpense, editExpense } from '../slices/expenseSlice';
 
-const ExpenseFormPage = ({ editIndex, setEditIndex, expenses, dispatchExpenseAction }) => {
+const ExpenseFormPage = ({ editId, setEditId }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const handleSaveExpense = (expense, ind) => {
-        const action = {}
-        if (ind > -1) {
-            action.type = "EDIT";
-            action.payload = { ind, expense };
+    const handleSaveExpense = (expense, id) => {
+        if (id > -1) {
+            dispatch(editExpense({ id, expense }));
         } else {
-            action.type = "ADD";
-            action.payload = { expense };
+            dispatch(addExpense({ expense }));
         }
-        dispatchExpenseAction(action);
-        setEditIndex(-1);
+        setEditId(-1);
         navigate('/expenses')
     };
 
     return (
         <>
-            <h1 className='bg-red-400'> Daily Expense Tracker</h1>
-            <ExpenseForm onSaveExpense={handleSaveExpense} editIndex={editIndex} key={editIndex} expenses={expenses || []} />
+            <h1>Daily Expense Tracker</h1>
+            <ExpenseForm onSaveExpense={handleSaveExpense} editId={editId} key={editId} />
         </>
     );
 };

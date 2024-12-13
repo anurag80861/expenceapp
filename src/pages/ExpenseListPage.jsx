@@ -1,95 +1,66 @@
-import React from "react";
-import ExpenseList from "../components/ExpenseList";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import ExpenseList from '../components/ExpenseList';
+import { useNavigate } from 'react-router-dom';
+import ExpenseCards from '../components/ExpenseCards';
+import FilterDropdown from '../components/FilterDropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCategoryFilter, removeCategoryFilter, resetCategoryFilter, selectCategoryFilter } from '../slices/filterSlice';
+import { deleteExpense, selectAllCategories, selectFilteredExpenses } from '../slices/expenseSlice';
 
-const ExpenseListPage = ({ setEditIndex, expenses, dispatchExpenseAction }) => {
+const ExpenseListPage = ({ setEditId }) => {
+    const [showList, setShowList] = useState(true);
+    const selectedCategories = useSelector(selectCategoryFilter);
+    const [reverse, setReverse] = useState(true);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const handleDeleteExpense = (ind) => {
-        dispatchExpenseAction({
-            type: "DELETE",
-            payload: { ind },
-        });
+    const allCategories = useSelector(selectAllCategories);
+
+    const onSelectCategory = (category) => {
+        dispatch(addCategoryFilter(category));
+    }
+
+    const onDeselectCategory = (category) => {
+        dispatch(removeCategoryFilter(category));
+    }
+
+    const handleDeleteExpense = (id) => {
+        dispatch(deleteExpense({ id }));
     };
 
-    const handleEditExpense = (ind) => {
-        setEditIndex(ind);
-        navigate("/");
+    const handleEditExpense = (id) => {
+        setEditId(id);
+        navigate('/');
     };
+
+    const toggleView = () => {
+        setShowList(val => !val);
+    }
+
+    const heading = showList ? "Expense List" : "Expense Cards";
+    const ExpenseView = showList ? ExpenseList : ExpenseCards;
+
+    const filteredExpenses = useSelector(selectFilteredExpenses);
+    
+    const handleReverse = () => {
+        setReverse(val => !val);
+    };
+    const listOrderingButtonName = reverse ? "Oldest First" : "Latest First";
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-purple-500 to-indigo-600 text-gray-100 py-8 px-4 ">
-            <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 text-gray-800">
-                <div className="flex justify-around">
-                    <button className="text-3xl font-bold mb-6 text-center text-purple-600">
-                        Expense List
-                    </button>
-
-                    <button className="text-3xl font-bold mb-6 text-center text-purple-600 ">
-                        Expense Table
-                    </button>
-                </div>
-
-                {expenses && expenses.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-7">
-                        {expenses.map((expense, index) => (
-                            <div
-                                key={index}
-                                className="p-4 rounded-lg shadow-md bg-gradient-to-br from-purple-200 to-indigo-300 hover:shadow-lg transition-shadow"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h2 className="text-xl font-semibold">{expense.title}</h2>
-
-                                        <p className="text-sm text-gray-600">
-                                            Amount: Rs {expense.amount}
-                                        </p>
-
-                                        <p className="text-sm text-gray-600">
-                                            Date: {expense.date}
-                                        </p>
-
-                                        <p className="text-sm text-gray-600">
-                                            paymentMode:- {expense.paymentMode}
-                                        </p>
-
-                                        <p className="text-sm text-gray-600">
-                                            beneficiary:- {expense.beneficiary}
-                                        </p>
-
-                                        <p className="text-sm text-gray-600">
-                                            Category:- {expense.category}
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                            tags:- {expense.tags}
-                                        </p>
-
-                                    </div>
-                                    <div className="space-x-2">
-                                        <button
-                                            onClick={() => handleEditExpense(index)}
-                                            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => handleDeleteExpense(index)}
-                                            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p className="text-center text-gray-600">
-                        No expenses to show. Add some!
-                    </p>
-                )}
-            </div>
-        </div>
+        <>
+            <button onClick={toggleView}>Toggle View</button>
+            <FilterDropdown
+                allOptions={allCategories}
+                selectedOptions={selectedCategories}
+                onSelectOption={onSelectCategory}
+                onDeselectOption={onDeselectCategory}
+                resetSelection={() => dispatch(resetCategoryFilter())}
+            />
+            <button onClick={handleReverse} >{listOrderingButtonName}</button>
+            <h1>{heading}</h1>
+            <ExpenseView isReverse={reverse} expenses={filteredExpenses || []} onDeleteExpense={handleDeleteExpense} onEditExpense={handleEditExpense} />
+        </>
     );
 };
 
